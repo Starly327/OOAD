@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-
+//test
 public class Frame extends JFrame implements ActionListener, MouseListener, MouseMotionListener{
 	String st[] = {"Select","Associationline","Generalizationline","Compositionline","Class","Usecase"};
     JToggleButton[] btn = new JToggleButton[st.length];
@@ -17,16 +17,16 @@ public class Frame extends JFrame implements ActionListener, MouseListener, Mous
     
 	public Frame() {
 		setTitle("UML_editor");
-        // Àò¨ú¿Ã¹õ¸ÑªR«×
+        // ï¿½ï¿½ï¿½ï¿½Ã¹ï¿½ï¿½ÑªRï¿½ï¿½
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        // ³]©wµøµ¡¤j¤p¦û¿Ã¹õ¥|¤À¤§¤@
+        // ï¿½]ï¿½wï¿½ï¿½ï¿½ï¿½ï¿½jï¿½pï¿½ï¿½ï¿½Ã¹ï¿½ï¿½|ï¿½ï¿½ï¿½ï¿½ï¿½@
         setSize(dimension.width / 2, dimension.height / 2);
-        //³]©wµøµ¡Åã¥Ü¦b¿Ã¹õµe­±¤¤¶¡¦ì¸m
+        //ï¿½]ï¿½wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¦bï¿½Ã¹ï¿½ï¿½eï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½m
         int x = (int) ((dimension.getWidth() - this.getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - this.getHeight()) / 2);
         setLocation(x, y);
         setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//³]©wÃö³¬¥i¥HÃö±¼µ{¦¡
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//ï¿½]ï¿½wï¿½ï¿½ï¿½ï¿½ï¿½iï¿½Hï¿½ï¿½ï¿½ï¿½ï¿½{ï¿½ï¿½
         ImageIcon image = new ImageIcon("logo.jpg");
         setIconImage(image.getImage());
         setLayout(null);
@@ -72,7 +72,7 @@ public class Frame extends JFrame implements ActionListener, MouseListener, Mous
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {//«ö«ö¶s
+	public void actionPerformed(ActionEvent e) {//ï¿½ï¿½ï¿½ï¿½ï¿½s
 		if(btn[0].isSelected()) {//select
 			canvas.removeMouseListener(this);
 			canvas.removeMouseMotionListener(this);
