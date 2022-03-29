@@ -82,7 +82,7 @@ public class Composite extends JPanel implements MouseMotionListener, MouseListe
 		temp.y = p.y + parentDistance.y;
 		for(Class c : selectedClass) c.parentMove(temp);
 		for(Composite com : selectedComposite) com.parentMove(temp);
-		//canvas.moveToFront(this);
+		canvas.moveToFront(this);
 		canvas.repaint();
 	}
 	
@@ -94,7 +94,10 @@ public class Composite extends JPanel implements MouseMotionListener, MouseListe
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+		if(canvas.getmode()=="Select") {
+			movePoint = MouseInfo.getPointerInfo().getLocation();
+            SwingUtilities.convertPointFromScreen(movePoint, this);
+		}
 	}
 
 	@Override
@@ -122,13 +125,18 @@ public class Composite extends JPanel implements MouseMotionListener, MouseListe
 			if(parent==null) {
 				Point p = MouseInfo.getPointerInfo().getLocation();
 				SwingUtilities.convertPointFromScreen(p, canvas);
-				this.setLocation(p);
-					//canvas.moveToFront(this);
-				for(Class c : selectedClass) c.parentMove(p);
-				for(Composite com : selectedComposite) com.parentMove(p);
+				//this.setLocation(p);
+				Point temp = new Point();
+				temp.x = (int)(p.getX() - movePoint.getX());
+				temp.y = (int)(p.getY() - movePoint.getY());
+				this.setLocation(temp.x, temp.y);
+				canvas.moveToFront(this);
+				for(Class c : selectedClass) c.parentMove(temp);
+				for(Composite com : selectedComposite) com.parentMove(temp);
 			}else {
 				parent.mouseDragged(e);
 			}
+			canvas.repaint();
 		}
 			
 	}

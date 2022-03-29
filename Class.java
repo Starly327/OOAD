@@ -11,16 +11,19 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 	Port[] port;
 	Boolean select = false;
 	Composite parent;
-	Point parentDistance = new Point();
+	Point parentDistance;
 	Point movePoint;
-	JLabel title = new JLabel();
+	JLabel title;
 	String mode;
 	
 	public Class(int x, int y, Canvas canvas) {
+		canvas.moveToFront(this);
 		this.canvas = canvas;
 		corner = new Point(x,y);
-		this.setOpaque(true);
+		parentDistance = new Point();
+		title = new JLabel();
 		
+		this.setOpaque(true);
         this.setBackground(Color.white);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
@@ -64,12 +67,12 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 	    }
 	}
 	
-	public void setTitle(String newtitle) {
+	public void setTitle(String newtitle) {//物件命名
         title.setText(newtitle);
         title.setFont(new Font("MV Boli", Font.BOLD, 15));
         title.setForeground(Color.BLACK);
         title.setLocation(20, 0);
-        title.setSize(50, 50);
+        title.setSize(100, 50);
         this.add(title);
         repaint();
 	}
@@ -81,7 +84,6 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 		double temp=9999;
 		Port temp_port = new Port();
 		for(Port port : port) {
-			
 			double distance = Math.sqrt(Math.pow(p.x-port.getX(),2) +
 						Math.pow(p.y-port.getY(), 2));
 			if(distance<temp) {
@@ -92,7 +94,7 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 		return temp_port;
 	}
 	
-	public void setvisible(Boolean b) {
+	public void setvisible(Boolean b) {//port隱藏與否
 		this.select = b;
 		for(int i=0; i<port.length; i++) {
 			port[i].setVisible(b);
@@ -103,14 +105,10 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 		this.parent = parent;
 	}
 	
-	public Composite findGrandparent() {
+	public Composite findGrandparent() {//找最大的composite
 		Composite temp = parent;
 		if(temp.parent!=null) temp = temp.parent;
 		return temp;
-	}
-	
-	public Composite findParent() {
-		return this.parent;
 	}
 	
 	public void parentMove(Point p) {
@@ -132,7 +130,6 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 			if(parent!=null) {
 				parent.mouseDragged(e);
 			}else {
-				
 				Point p = MouseInfo.getPointerInfo().getLocation();
 				SwingUtilities.convertPointFromScreen(p, canvas);
 				this.setLocation((int) (p.getX() - movePoint.getX()),
@@ -154,9 +151,13 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(canvas.getmode()=="Select") {
+			canvas.selectedRenameClass = this;
 			if(parent!=null) {
 				canvas.selectedComposite.clear();
-				canvas.selectedComposite.add(this.parent);
+				canvas.selectedComposite.add(parent);
+			}else {
+				canvas.selectedClass.clear();
+				canvas.selectedClass.add(this);
 			}
 			movePoint = MouseInfo.getPointerInfo().getLocation();
             SwingUtilities.convertPointFromScreen(movePoint, this);
@@ -188,15 +189,13 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(canvas.getmode()=="Select") {
+			canvas.selectedRenameClass = this;
 			if(parent!=null) {
 				canvas.selectedComposite.clear();
 				canvas.selectedComposite.add(this.parent);
 			}else {
-				if(!canvas.selectedClass.contains(this)) {
 					canvas.selectedClass.clear();
-					canvas.selectedClass.add(this);
-				}
-					
+					canvas.selectedClass.add(this);	
 			}
 		}
 	}
@@ -207,7 +206,7 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 		// TODO Auto-generated method stub
 		if(canvas.getmode()=="Assosiationline" || canvas.getmode()=="Generalizationline" ||
 				canvas.getmode()=="Compositionline") {
-			setvisible(true);
+			//setvisible(true);
 			if(canvas.start_port!=null){
 				canvas.end_class = this;
 			}
@@ -221,7 +220,7 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 		if(canvas.getmode()=="Assosiationline" || canvas.getmode()=="Generalizationline" ||
 				canvas.getmode()=="Compositionline") {
 			canvas.end_class = null;
-			setvisible(false);
+			//setvisible(false);
 		}
 		
 	}

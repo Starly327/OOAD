@@ -66,47 +66,32 @@ public class Frame extends JFrame implements ActionListener, MouseListener, Mous
           validate();
         
 	}
-
-	public String getmode() {
-		return mode;
-	}
 	
 	public String getGroup() {
 		return ifgroup;
 	}
 	
-	public void portUnvisible() {
+	public void portUnvisible() {//隱藏所有port
 		for(Class c : canvas.class_list) c.setvisible(false);
 	}
+	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {//按按鈕
 		if(btn[0].isSelected()) {//select
-			canvas.removeMouseListener(this);
-			canvas.removeMouseMotionListener(this);
-			canvas.addMouseListener(this);
-			canvas.addMouseMotionListener(this);
+			canvas.removeMouseListener(canvas);
+			canvas.removeMouseMotionListener(canvas);
+			canvas.addMouseListener(canvas);
+			canvas.addMouseMotionListener(canvas);
 			portUnvisible();
 			mode = "Select";
 		}else if(btn[1].isSelected()) {//association
-			canvas.removeMouseListener(this);
-			canvas.removeMouseMotionListener(this);
-			canvas.addMouseListener(this);
-			canvas.addMouseMotionListener(this);
 			portUnvisible();
 			mode = "Assosiationline";
 		}else if(btn[2].isSelected()) {//generalization
-			canvas.removeMouseListener(this);
-			canvas.removeMouseMotionListener(this);
-			canvas.addMouseListener(this);
-			canvas.addMouseMotionListener(this);
 			portUnvisible();
 			mode = "Generalizationline";
 		}else if(btn[3].isSelected()) {//composition
-			canvas.removeMouseListener(this);
-			canvas.removeMouseMotionListener(this);
-			canvas.addMouseListener(this);
-			canvas.addMouseMotionListener(this);
 			portUnvisible();
 			mode = "Compositionline";
 		}else if(btn[4].isSelected()) {//class
@@ -122,8 +107,8 @@ public class Frame extends JFrame implements ActionListener, MouseListener, Mous
 			portUnvisible();
 			mode = "Use_case";
 		}else {
-			canvas.removeMouseListener(this);
-			canvas.removeMouseMotionListener(this);
+			canvas.removeMouseListener(canvas);
+			canvas.removeMouseMotionListener(canvas);
 			//portUnvisible();
 			mode = "NULL";
 		}
@@ -132,24 +117,24 @@ public class Frame extends JFrame implements ActionListener, MouseListener, Mous
 		if(e.getSource()==ungroupItem) canvas.deComposite();
 		
 		if(e.getSource()==renameItem) {
-			System.out.println(canvas.selectedClass.size());
-			if(canvas.selectedClass.size()==1) {
-				
+			if(canvas.selectedRenameClass!=null) {
 				renameFrame();
 			}
 		}
 		
 		if(e.getSource()==okButton) {
-			canvas.selectedClass.get(0).setTitle(renameField.getText());
+			canvas.selectedRenameClass.setTitle(renameField.getText());
 			renameFrame.dispose();
+			canvas.selectedRenameClass = null;
 		}
 		if(e.getSource()==cancelButton) {
 			renameFrame.dispose();
+			canvas.selectedRenameClass = null;
 		}
 			
 	}
 
-	public void renameFrame() {
+	public void renameFrame() {//改名視窗
 		renameFrame = new JFrame();
 		renameFrame.setTitle("Rename");
 		renameFrame.setLayout(new FlowLayout());
