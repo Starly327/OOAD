@@ -19,6 +19,7 @@ public class Frame extends JFrame implements ActionListener, MouseListener, Mous
     JFrame renameFrame;
     Dimension dimension;
     
+    
 	public Frame() {
 		setTitle("UML_editor");
         // 獲取螢幕解析度
@@ -32,6 +33,12 @@ public class Frame extends JFrame implements ActionListener, MouseListener, Mous
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//設定關閉可以關掉程式
         ImageIcon image = new ImageIcon("logo.jpg");
+        //ImageIcon selectIcon = new ImageIcon("select.PNG");
+        //ImageIcon classIcon = new ImageIcon("class.PNG");
+        //ImageIcon usecaseIcon = new ImageIcon("usecase.PNG");
+        //ImageIcon associationIcon = new ImageIcon("association.PNG");
+        //ImageIcon generalIcon = new ImageIcon("general.PNG");
+        //ImageIcon compositionIcon = new ImageIcon("composition.PNG");
         setIconImage(image.getImage());
         setLayout(null);
         
@@ -42,7 +49,8 @@ public class Frame extends JFrame implements ActionListener, MouseListener, Mous
             btn[i].setBounds(25, 100+i*50, 220, 50);
             btn[i].addActionListener(this);
             add(btn[i]);
-          }
+        }
+       
           canvas = new Canvas(this);
           add(canvas);
           JMenuBar menuBar = new JMenuBar();
@@ -145,8 +153,10 @@ public class Frame extends JFrame implements ActionListener, MouseListener, Mous
         
 		okButton = new JButton("OK");
 		okButton.setFont(new Font("MV Boli", Font.BOLD, 15));
+		okButton.setFocusable(false);
 		cancelButton = new JButton("CANCEL");
 		cancelButton.setFont(new Font("MV Boli", Font.BOLD, 15));
+		cancelButton.setFocusable(false);
 		renameField = new JTextField();
 		renameField.setPreferredSize(new Dimension(250,40));
 		renameField.setFont(new Font("MV Boli", Font.BOLD, 20));

@@ -64,10 +64,8 @@ public class Canvas extends JLayeredPane implements MouseListener, MouseMotionLi
 	
 	public void deComposite() {
 		if(selectedComposite.size()==1) {
-			Composite temp = selectedComposite.get(0);
-			while(temp.findParent()!=null) temp = temp.findParent();
+			Composite temp = selectedComposite.get(0).findGrandparent().findGrandparent();
 			for(Class c : temp.selectedClass) c.setParent(null);
-			
 			for(Composite com : temp.selectedComposite) com.setParent(null);
 			this.remove(temp);
 			selectedComposite.clear();
@@ -178,7 +176,7 @@ public class Canvas extends JLayeredPane implements MouseListener, MouseMotionLi
 		}else if(getmode()=="Class" || getmode()=="Use_case") {
 			Class c = new Class(e.getX(), e.getY(), this);
 			class_list.add(c);
-			canvas.add(c);
+			canvas.add(c,0);
 		}
 		repaint();
 	}

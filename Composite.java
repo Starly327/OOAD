@@ -8,7 +8,7 @@ import uml_editor.Class;
 
 public class Composite extends JPanel implements MouseMotionListener, MouseListener{
 
-	Canvas canvas;
+	 Canvas canvas;
 	 ArrayList<Class> selectedClass;
 	 ArrayList<Composite> selectedComposite;
 	 Composite parent;
@@ -21,6 +21,7 @@ public class Composite extends JPanel implements MouseMotionListener, MouseListe
 	public Composite(Canvas canvas, ArrayList<Class> selectedClass, ArrayList<Composite> selectedComposite) {
 		this.selectedClass = new ArrayList<Class>(selectedClass);
 		this.selectedComposite = new ArrayList<Composite>(selectedComposite);
+		
 		this.canvas = canvas;
 		setBound();
 		
@@ -66,8 +67,11 @@ public class Composite extends JPanel implements MouseMotionListener, MouseListe
 		this.parent = parent;
 	}
 	
-	public Composite findParent() {
-		return parent;
+	public Composite findGrandparent() {//找最大的composite
+		if(parent==null) return this;
+		Composite temp = parent;
+		while(temp.parent!=null) temp = temp.parent;
+		return temp;
 	}
 	
 	public void parentDistance(int x, int y) {//class與parent的距離
@@ -80,9 +84,10 @@ public class Composite extends JPanel implements MouseMotionListener, MouseListe
 		Point temp = new Point();
 		temp.x = p.x + parentDistance.x;
 		temp.y = p.y + parentDistance.y;
+		canvas.moveToFront(this);
 		for(Class c : selectedClass) c.parentMove(temp);
 		for(Composite com : selectedComposite) com.parentMove(temp);
-		canvas.moveToFront(this);
+		
 		canvas.repaint();
 	}
 	
@@ -95,6 +100,11 @@ public class Composite extends JPanel implements MouseMotionListener, MouseListe
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(canvas.getmode()=="Select") {
+			if(parent!=null) {
+				Composite temp = findGrandparent();
+				temp.movePoint = MouseInfo.getPointerInfo().getLocation();
+	            SwingUtilities.convertPointFromScreen(temp.movePoint, temp);
+			}
 			movePoint = MouseInfo.getPointerInfo().getLocation();
             SwingUtilities.convertPointFromScreen(movePoint, this);
 		}

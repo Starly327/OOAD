@@ -17,7 +17,6 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 	String mode;
 	
 	public Class(int x, int y, Canvas canvas) {
-		canvas.moveToFront(this);
 		this.canvas = canvas;
 		corner = new Point(x,y);
 		parentDistance = new Point();
@@ -107,7 +106,7 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 	
 	public Composite findGrandparent() {//§ä³Ì¤jªºcomposite
 		Composite temp = parent;
-		if(temp.parent!=null) temp = temp.parent;
+		while(temp.parent!=null) temp = temp.parent;
 		return temp;
 	}
 	
@@ -155,9 +154,14 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 			if(parent!=null) {
 				canvas.selectedComposite.clear();
 				canvas.selectedComposite.add(parent);
+				Composite temp = findGrandparent();
+				temp.movePoint = MouseInfo.getPointerInfo().getLocation();
+	            SwingUtilities.convertPointFromScreen(temp.movePoint, temp);
 			}else {
+				canvas.selectedComposite.clear();
 				canvas.selectedClass.clear();
 				canvas.selectedClass.add(this);
+				
 			}
 			movePoint = MouseInfo.getPointerInfo().getLocation();
             SwingUtilities.convertPointFromScreen(movePoint, this);
@@ -194,9 +198,17 @@ public class Class extends JPanel implements MouseMotionListener, MouseListener{
 				canvas.selectedComposite.clear();
 				canvas.selectedComposite.add(this.parent);
 			}else {
-					canvas.selectedClass.clear();
-					canvas.selectedClass.add(this);	
+				canvas.selectedComposite.clear();
+				canvas.selectedClass.clear();
+				canvas.selectedClass.add(this);	
 			}
+		}
+		if(canvas.getmode()=="Class" || canvas.getmode()=="Use_case") {
+			Point p = MouseInfo.getPointerInfo().getLocation();
+            SwingUtilities.convertPointFromScreen(p, canvas);
+			Class c = new Class(p.x, p.y, canvas);
+			canvas.class_list.add(c);
+			canvas.add(c,0);
 		}
 	}
 
